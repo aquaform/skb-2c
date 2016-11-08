@@ -10,8 +10,7 @@ function calculate(url) {
 	} catch(e) {		
 		return 0;
 	}		
-	const reB = /(b=)((\-)?\d+(\.\d+)?)/;
-	console.log(a);
+	const reB = /(b=)((\-)?\d+(\.\d+)?)/;	
 	try {
 		var b = (url.match(reB)[2]);
 	} catch (e) {
@@ -19,12 +18,10 @@ function calculate(url) {
 	}
 	return Number(a) + Number(b);	
 };
-app.get('/', (req, res) => {
-	
+app.get('/', (req, res) => {	
 	const sum = calculate(req.url);
 	res.json ({
-		url: sum,
-		fg: '112'
+		'Сумма': sum,		
 	});
 });
 app.listen(3000, () => {
