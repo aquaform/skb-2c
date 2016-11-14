@@ -2,26 +2,21 @@ import express from 'express';
 import fetch from 'isomorphic-fetch';
 import Promise from 'bluebird';
 import _ from 'lodash';
+
 const app = express();
-function calculate(url) {
-	const reA = /(a=)((\-)?\d+(\.\d+)?)/;
-	try {
-		var a = url.match(reA)[2];
-	} catch(e) {		
-		return 0;
-	}		
-	const reB = /(b=)((\-)?\d+(\.\d+)?)/;	
-	try {
-		var b = (url.match(reB)[2]);
-	} catch (e) {
-		return a;
-	}
-	return Number(a) + Number(b);	
+
+function canonize(url) {
+	const re = new RegExp ('@?(https?)?(\/\/)?((telegram|vk|twitter|vkontakte)(\.(.w+)\/))?(/w*)', 'i');
+	const username = url.match(re);
+	
+	return username;	
 };
-app.get('/', (req, res) => {	
-	const sum = calculate(req.url);
+app.get('/task2c', (req, res) => {	
+	
+	const username = canonize(req.url);
+
 	res.json ({
-		'Сумма': sum,		
+		'username': username,		
 	});
 });
 app.listen(3000, () => {
