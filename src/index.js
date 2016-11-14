@@ -2,22 +2,18 @@ import express from 'express';
 import fetch from 'isomorphic-fetch';
 import Promise from 'bluebird';
 import _ from 'lodash';
+import cors from 'cors';
 
 const app = express();
 
-function canonize(url) {
-	const re = new RegExp ('@?(https?)?(\/\/)?((telegram|vk|twitter|vkontakte)(\.(.w+)\/))?(/w*)', 'i');
-	const username = url.match(re);
-	
-	return username;	
-};
+app.use(cors());
 app.get('/task2c', (req, res) => {	
 	
-	const username = canonize(req.url);
+  const url = req.query.username;
+  const re = new RegExp('@?(https?:)?(//)?(([a-z.])[^/]*/)?@?([a-zA-Z0-9._]*)', 'i');
+  const username = url.match(re)[5];
+  res.send('@'+ username);
 
-	res.json ({
-		'username': username,		
-	});
 });
 app.listen(3000, () => {
   console.log('Запущен сервер. Для остановки нажмите Ctrl + C.');
